@@ -18,13 +18,13 @@ public class ARASAAC {
     private final static String API_URL = "https://api.arasaac.org/api";
     private final static String LANG = "fr";
 
-    public static void searchPicto(String... query){
+    public static JsonNode searchPicto(String... query){
         StringBuilder url = new StringBuilder(API_URL + "/pictograms/" + LANG + "/search/");
         for (String s : query) {
             url.append(s).append("%20");
         }
         try {
-            System.out.println(sendGetRequest(String.valueOf(url)).toString());
+            return sendGetRequest(String.valueOf(url));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -61,20 +61,25 @@ public class ARASAAC {
 
             // Fermeture de la connexion
             connection.disconnect();
+
+            // Traitement de la réponse
             ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readTree(String.valueOf(response));
-        // Traitement de la réponse
-            return jsonNode;
+            //System.out.println(objectMapper.readTree(response.toString()));
+
+            return objectMapper.readTree(response.toString());
     }
 
-    public static void getPictogrammeURL(int pictoId, boolean plural, boolean color,
+    public static JsonNode getPictogrammeURL(int pictoId, boolean plural, boolean color,
                                       String backgroundColor, PictogramActions action,
                                       PictogramResolution resolution, PictogramSkin skin,
                                       PictogramHair hair){
         String url = API_URL + "/pictograms/" + pictoId;
         url += "?plural=" + plural;
         url += "&color=" + color;
-        url += "&backgroundColor=" + backgroundColor;
+        if (!backgroundColor.equals("none")){
+            url += "&backgroundColor=" + backgroundColor;
+        }
+
         if (action != PictogramActions.NONE){
             url += "&action=" + action.getAction();
         }
@@ -85,10 +90,20 @@ public class ARASAAC {
         url += "&url=true";
 
         try {
-            System.out.println(sendGetRequest(url).toString());
+            return sendGetRequest(url);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public static JsonNode getPictogrammeURL(int pictoId){
+        String url = API_URL + "/pictograms/" + pictoId;
+        url += "?url=true";
+        try {
+            return sendGetRequest(url);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -1,7 +1,7 @@
 module fr.sae201.sae201 {
     requires javafx.controls;
     requires javafx.fxml;
-    requires com.fasterxml.jackson.databind;
+    requires jackson.databind;
 
 
     opens fr.sae201.sae201 to javafx.fxml;

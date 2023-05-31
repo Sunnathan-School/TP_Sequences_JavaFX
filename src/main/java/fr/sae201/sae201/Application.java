@@ -1,5 +1,6 @@
 package fr.sae201.sae201;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.sae201.sae201.models.Pictograms.PictogramActions;
 import fr.sae201.sae201.models.Pictograms.PictogramHair;
 import fr.sae201.sae201.models.Pictograms.PictogramResolution;
@@ -15,16 +16,20 @@ import java.io.IOException;
 public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
-        //showHome(stage);
-        ARASAAC.getPictogrammeURL(31348, false, true, "none", PictogramActions.NONE, PictogramResolution.SMALL, PictogramSkin.WHITE, PictogramHair.BROWN);
+        showHome(stage);
+
+        //Récupère le pictogramme
+        //JsonNode res = ARASAAC.getPictogrammeURL(31348, false, true, "none", PictogramActions.NONE, PictogramResolution.SMALL, PictogramSkin.WHITE, PictogramHair.BROWN);
+        //System.out.println(res.get("image")); ==> lien .png
+
     }
 
 
     public void showHome(Stage stage) throws IOException {
         StageManager.homeStage = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("Vue_Principal.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Séquentiels");
         stage.setScene(scene);
         stage.show();
     }

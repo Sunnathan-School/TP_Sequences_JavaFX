@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
@@ -12,8 +13,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="1032.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="1032.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.sae201.sae201.controller.Controller_Principal">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -35,12 +35,20 @@
         <items>
             <VBox alignment="TOP_CENTER" prefHeight="373.0" prefWidth="174.0">
                <children>
-                  <TextField />
-                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Rechercher">
+                  <TextField fx:id="pictoSearchBar" />
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#searchPicto" prefHeight="25.0" prefWidth="126.0" text="Rechercher">
                      <VBox.margin>
                         <Insets top="8.0" />
                      </VBox.margin>
                   </Button>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="239.0">
+                     <VBox.margin>
+                        <Insets top="16.0" />
+                     </VBox.margin>
+                     <content>
+                        <VBox fx:id="pictoScrollPane" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="223.0" prefWidth="237.0" />
+                     </content>
+                  </ScrollPane>
                </children>
                <padding>
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
