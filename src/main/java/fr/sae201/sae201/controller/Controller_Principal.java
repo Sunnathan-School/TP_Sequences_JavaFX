@@ -1,24 +1,34 @@
 package fr.sae201.sae201.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.sae201.sae201.models.Pictograms.Pictogram;
 import fr.sae201.sae201.utils.ARASAAC;
 import fr.sae201.sae201.utils.Alerts;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
-import javafx.scene.layout.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
 public class Controller_Principal {
     @FXML
@@ -47,7 +57,9 @@ public class Controller_Principal {
             imageLoadingTasks = new ArrayList<>();
             for (JsonNode jsonNode : res) {
                 int id = Integer.parseInt(String.valueOf(jsonNode.get("_id")));
-                Task<ImageView> task = createImageLoadingTask(id);
+                Pictogram pictogram = new Pictogram();
+
+                Task<ImageView> task = pictogram.generatePictoImage(id);
                 imageLoadingTasks.add(task);
                 task.setOnSucceeded(e -> {
                     ImageView imageView = task.getValue();
@@ -64,25 +76,8 @@ public class Controller_Principal {
             Alerts.showAlertWithoutHeaderText(Alert.AlertType.ERROR,"Erreur","Aucun pictogramme n'a été trouvé");
         }
         scene.setCursor(Cursor.DEFAULT);
-
-
     }
 
-
-    private Task<ImageView> createImageLoadingTask(int id) {
-        return new Task<>() {
-            @Override
-            protected ImageView call() throws Exception {
-                String imageUrl = ARASAAC.getPictogrammeURL(id).get("image").asText();
-                Image image = new Image(imageUrl);
-                ImageView imageView = new ImageView(image);
-                imageView.setFitHeight(100);
-                imageView.setPreserveRatio(true);
-                imageView.setId(String.valueOf(id));
-                return imageView;
-            }
-        };
-    }
 
     @FXML
     void initialize(){
@@ -91,13 +86,7 @@ public class Controller_Principal {
                 searchBTN.fire();
             }
         });
-
         initDragAndDrop();
-
-
-
-
-
     }
 
     private int getColumnIndex(double x) {
@@ -111,8 +100,6 @@ public class Controller_Principal {
         double rowHeight = totalHeight / mainGrid.getRowCount();
         return (int) (y / rowHeight);
     }
-
-
     private void initDragAndDrop() {
         // Gestion du glisser-déposer depuis la ListView
         pictoAPIList.setOnDragDetected(event -> {
@@ -143,26 +130,72 @@ public class Controller_Principal {
 
             if (dragboard.hasImage()) {
                 Image image = dragboard.getImage();
+
                 int columnIndex = getColumnIndex(event.getX());
                 int rowIndex = getRowIndex(event.getY());
 
+                addRowAndColumnToGridPane(mainGrid,columnIndex,rowIndex);
+
                 ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(mainGrid.getWidth()/mainGrid.getColumnCount());
+                imageView.setPreserveRatio(true);
+                imageView.setFitHeight(mainGrid.getHeight()/mainGrid.getRowCount());
 
                 mainGrid.add(imageView, columnIndex, rowIndex);
-               addRowAndColumnToGridPane(mainGrid);
+
                 success = true;
             }
 
             event.setDropCompleted(success);
             event.consume();
         });
+
+
+
     }
+    private void addRowAndColumnToGridPane(GridPane gridPane, int columnIndex, int rowIndex) {
+        int numRows = gridPane.getRowCount();
+        int numCols = gridPane.getColumnCount();
 
-    private void addRowAndColumnToGridPane(GridPane gridPane) {
-        gridPane.addRow(1, new Pane());
+
+
+
+        if (rowIndex == numRows - 1 || numRows == 0) {
+            gridPane.getRowConstraints().add(new RowConstraints());
+        }
+
+        if (columnIndex == numCols - 1 || numCols == 0) {
+            gridPane.getColumnConstraints().add(new ColumnConstraints());
+        }
+
+
+        for (ColumnConstraints columnConstraint : gridPane.getColumnConstraints()) {
+            columnConstraint.setPrefWidth(gridPane.getWidth()/gridPane.getColumnCount());
+            columnConstraint.setMaxWidth(gridPane.getWidth()/gridPane.getColumnCount());
+            columnConstraint.setMinWidth(gridPane.getWidth()/gridPane.getColumnCount());
+            columnConstraint.setHgrow(Priority.ALWAYS);
+            columnConstraint.setFillWidth(true);
+            columnConstraint.setHalignment(HPos.CENTER);
+        }
+
+        for (RowConstraints rowConstraint : gridPane.getRowConstraints()) {
+            rowConstraint.setPrefHeight(gridPane.getHeight()/gridPane.getRowCount());
+            rowConstraint.setMaxHeight(gridPane.getHeight()/gridPane.getRowCount());
+            rowConstraint.setMinHeight(gridPane.getHeight()/gridPane.getRowCount());
+            rowConstraint.setVgrow(Priority.ALWAYS);
+            rowConstraint.setFillHeight(true);
+            rowConstraint.setValignment(VPos.CENTER);
+        }
+
+
+
+        for (Node child : gridPane.getChildren()) {
+            if (child instanceof ImageView imageView){
+                imageView.setFitWidth(mainGrid.getWidth()/mainGrid.getColumnCount());
+
+                imageView.setFitHeight(mainGrid.getHeight()/mainGrid.getRowCount());
+            }
+        }
     }
-
-
-
 
 }
