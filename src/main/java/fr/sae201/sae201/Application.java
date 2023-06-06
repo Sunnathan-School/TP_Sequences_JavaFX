@@ -1,12 +1,6 @@
 package fr.sae201.sae201;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import fr.sae201.sae201.models.Pictograms.PictogramActions;
-import fr.sae201.sae201.models.Pictograms.PictogramHair;
-import fr.sae201.sae201.models.Pictograms.PictogramResolution;
-import fr.sae201.sae201.models.Pictograms.PictogramSkin;
 import fr.sae201.sae201.models.StageManager;
-import fr.sae201.sae201.utils.ARASAAC;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

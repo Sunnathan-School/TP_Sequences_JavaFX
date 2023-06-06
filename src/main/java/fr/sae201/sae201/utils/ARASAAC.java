@@ -23,10 +23,11 @@ public class ARASAAC {
         for (String s : query) {
             url.append(s).append("%20");
         }
+        if (query.length == 0) return null;
         try {
             return sendGetRequest(String.valueOf(url));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 
@@ -38,10 +39,10 @@ public class ARASAAC {
         }
     }
 
-    public static JsonNode sendGetRequest(String querry) throws IOException {
-            System.out.println("[GET] " + querry);
+    public static JsonNode sendGetRequest(String query) throws IOException {
+            System.out.println("[GET] " + query);
             // Création de l'objet URL
-            URL url = new URL(querry);
+            URL url = new URL(query);
 
             // Ouverture de la connexion HTTP
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -61,12 +62,14 @@ public class ARASAAC {
 
             // Fermeture de la connexion
             connection.disconnect();
+            if (!response.isEmpty()){
+                // Traitement de la réponse
+                ObjectMapper objectMapper = new ObjectMapper();
+                //System.out.println(objectMapper.readTree(response.toString()));
 
-            // Traitement de la réponse
-            ObjectMapper objectMapper = new ObjectMapper();
-            //System.out.println(objectMapper.readTree(response.toString()));
-
-            return objectMapper.readTree(response.toString());
+                return objectMapper.readTree(response.toString());
+            }
+           return null;
     }
 
     public static JsonNode getPictogrammeURL(int pictoId, boolean plural, boolean color,
