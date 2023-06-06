@@ -78,7 +78,30 @@ public class Controller_Principal {
         scene.setCursor(Cursor.DEFAULT);
     }
 
+    @FXML
+    void createNewSequentiel(ActionEvent event) {
+        System.out.println("Create New Seq");
+        //Pop-up save si gridPane n'est pas vide
+            //Save
 
+    }
+
+    @FXML
+    void openExistingSequentiel(ActionEvent event) {
+        System.out.println("Open Seq");
+        //Ouverture FileExplorer ==> Choix d'un ".seq"
+        //Ajout de tous les picto dans le grid Pane
+    }
+
+    @FXML
+    void saveSequentiel(ActionEvent event) {
+        System.out.println("Save Seq");
+        //Si chemin spécifier
+            //save
+        //sinon
+            //open Explorer ==> Choix du nom
+            //Save
+    }
     @FXML
     void initialize(){
         pictoSearchBar.setOnKeyPressed(event -> {

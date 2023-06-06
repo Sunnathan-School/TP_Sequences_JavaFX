@@ -22,9 +22,9 @@
         <menus>
           <Menu mnemonicParsing="false" text="Fichiers">
             <items>
-              <MenuItem mnemonicParsing="false" text="Nouveau" />
-                  <MenuItem mnemonicParsing="false" text="Ouvrir" />
-                  <MenuItem mnemonicParsing="false" text="Fermer" />
+              <MenuItem mnemonicParsing="false" onAction="#createNewSequentiel" text="Nouveau" />
+                  <MenuItem mnemonicParsing="false" onAction="#openExistingSequentiel" text="Ouvrir" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveSequentiel" text="Enregistrer" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Exporter" />
             </items>

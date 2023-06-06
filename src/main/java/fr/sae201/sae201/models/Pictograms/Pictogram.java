@@ -5,20 +5,22 @@ import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Pictogram {
+import java.io.Serializable;
 
-    private boolean plural;
+public class Pictogram implements Serializable {
 
-    private boolean color;
+    private boolean plural = false;
 
-    private String backgroundColor;
-    private String action;
-    private Integer resolution;
-    private String skin;
-    private String hair;
+    private boolean color = true;
+
+    private String backgroundColor = null;
+    private String action = null;
+    private Integer resolution = null;
+    private String skin = null;
+    private String hair = null;
     //URL = true
 
-    private String pictoImage;
+    private int pictoId;
 
     public Task<ImageView> generatePictoImage(int id){
         return new Task<>() {
