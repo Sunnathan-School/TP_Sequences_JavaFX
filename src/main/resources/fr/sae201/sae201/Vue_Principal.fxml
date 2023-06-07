@@ -23,10 +23,11 @@
           <Menu mnemonicParsing="false" text="Fichiers">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#createNewSequentiel" text="Nouveau" />
-                  <MenuItem mnemonicParsing="false" onAction="#openExistingSequentiel" text="Ouvrir" />
-                  <MenuItem mnemonicParsing="false" onAction="#saveSequentiel" text="Enregistrer" />
+                  <MenuItem fx:id="openSeqItem" mnemonicParsing="false" onAction="#openExistingSequentiel" text="Ouvrir" />
+                  <MenuItem fx:id="saveSeqItem" mnemonicParsing="false" onAction="#saveSequentiel" text="Enregistrer" />
+                  <MenuItem fx:id="closeSeqItem" mnemonicParsing="false" onAction="#closeExistingSequentiel" text="Fermer" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Exporter" />
+                  <MenuItem fx:id="exportSeqItem" mnemonicParsing="false" text="Exporter" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="A Propos" />
@@ -34,7 +35,7 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane dividerPositions="0.283495145631068" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane fx:id="mainPane" dividerPositions="0.283495145631068" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
             <VBox alignment="TOP_CENTER" prefHeight="373.0" prefWidth="174.0">
                <children>

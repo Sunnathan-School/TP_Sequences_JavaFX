@@ -14,24 +14,25 @@ public class Pictogram implements Serializable {
     private boolean color = true;
 
     private String backgroundColor = null;
-    private String action = null;
-    private Integer resolution = null;
-    private String skin = null;
-    private String hair = null;
-    //URL = true
+    private PictogramActions action = null;
+    private PictogramResolution resolution = null;
+    private PictogramSkin skin = null;
+    private PictogramHair hair = null;
 
     private int pictoId;
 
     public Task<ImageView> generatePictoImage(int id){
         return new Task<>() {
             @Override
-            protected ImageView call() throws Exception {
+            protected ImageView call() {
                 String imageUrl = ARASAAC.getPictogrammeURL(id).get("image").asText();
                 Image image = new Image(imageUrl);
                 ImageView imageView = new ImageView(image);
                 imageView.setFitHeight(100);
                 imageView.setPreserveRatio(true);
                 imageView.setId(String.valueOf(id));
+
+                System.out.println(image.toString());
                 return imageView;
             }
         };
@@ -39,7 +40,7 @@ public class Pictogram implements Serializable {
 
 
 
-    public Pictogram(boolean plural, boolean color, String backgroundColor, String action, Integer resolution, String skin, String hair) {
+    public Pictogram(boolean plural, boolean color, String backgroundColor, PictogramActions action, PictogramResolution resolution, PictogramSkin skin, PictogramHair hair) {
         super();
         this.plural = plural;
         this.color = color;

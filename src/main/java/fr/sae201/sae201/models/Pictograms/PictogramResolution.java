@@ -1,6 +1,8 @@
 package fr.sae201.sae201.models.Pictograms;
 
-public enum PictogramResolution {
+import java.io.Serializable;
+
+public enum PictogramResolution implements Serializable {
     SMALL(500),
     BIG(2500);
 

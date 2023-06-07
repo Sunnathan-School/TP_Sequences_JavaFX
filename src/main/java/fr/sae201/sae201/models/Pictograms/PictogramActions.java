@@ -1,6 +1,8 @@
 package fr.sae201.sae201.models.Pictograms;
 
-public enum PictogramActions {
+import java.io.Serializable;
+
+public enum PictogramActions implements Serializable {
     PAST("past"),
     NONE(""),
     FUTURE("future");

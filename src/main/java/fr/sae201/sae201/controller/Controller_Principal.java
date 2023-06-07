@@ -2,6 +2,10 @@ package fr.sae201.sae201.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.sae201.sae201.models.Pictograms.Pictogram;
+import fr.sae201.sae201.models.Pictograms.PictogramCoord;
+import fr.sae201.sae201.models.SaveManager;
+import fr.sae201.sae201.models.SequentielSave;
+import fr.sae201.sae201.models.StageManager;
 import fr.sae201.sae201.utils.ARASAAC;
 import fr.sae201.sae201.utils.Alerts;
 import javafx.concurrent.Task;
@@ -12,22 +16,21 @@ import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Controller_Principal {
@@ -36,12 +39,26 @@ public class Controller_Principal {
     @FXML
     private GridPane mainGrid;
     @FXML
+    private MenuItem closeSeqItem;
+    @FXML
     private ListView<ImageView> pictoAPIList;
 
     @FXML
+    private SplitPane mainPane;
+
+    @FXML
     private Button searchBTN;
+    @FXML
+    private MenuItem exportSeqItem;
+    @FXML
+    private MenuItem openSeqItem;
+    @FXML
+    private MenuItem saveSeqItem;
 
     private List<Task<ImageView>> imageLoadingTasks;
+
+    private ImageView currentImageView;
+    private HashMap<ImageView, PictogramCoord> coordHashMap = new HashMap<>();
     @FXML
     void searchPicto(ActionEvent event) {
         pictoAPIList.getItems().clear();
@@ -64,8 +81,8 @@ public class Controller_Principal {
                 task.setOnSucceeded(e -> {
                     ImageView imageView = task.getValue();
                     pictoAPIList.getItems().add(imageView);
-
                 });
+
                 task.setOnFailed(e -> {
                     Alerts.showAlertWithoutHeaderText(Alert.AlertType.ERROR,"Erreur","Erreur lors du chargement de l'image : " + e.getSource().getException().getMessage());
                 });
@@ -80,27 +97,101 @@ public class Controller_Principal {
 
     @FXML
     void createNewSequentiel(ActionEvent event) {
-        System.out.println("Create New Seq");
-        //Pop-up save si gridPane n'est pas vide
-            //Save
+        if (mainGrid.getChildren().size() > 1){  //Pop-up save si gridPane n'est pas vide
+            Alerts.showAlertWithoutHeaderText(Alert.AlertType.INFORMATION, "Attention", "Vous avez déjà un projet en cours, merci de le fermer avant !");
+        }else {//ouverture popUp
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialFileName("sequentiel");
+            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Séquentiel (.seq)", "*.seq");
+            fileChooser.getExtensionFilters().add(extensionFilter);
+            fileChooser.setSelectedExtensionFilter(extensionFilter);
+            File file = fileChooser.showSaveDialog(StageManager.homeStage);
+            if (file != null){
+                SaveManager.setProjectPath(file.getAbsolutePath());
+                SaveManager.updateTitle();
+                lockPane(false);
+            }
 
+        }
     }
 
     @FXML
     void openExistingSequentiel(ActionEvent event) {
         System.out.println("Open Seq");
-        //Ouverture FileExplorer ==> Choix d'un ".seq"
-        //Ajout de tous les picto dans le grid Pane
+        if (mainGrid.getChildren().size() > 1){  //Sauvegarde si gridPane n'est pas vide
+            Alerts.showAlertWithoutHeaderText(Alert.AlertType.INFORMATION, "Attention", "Vous avez déjà un projet en cours, merci de le fermer avant !");
+        }else {//ouverture popUp
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialFileName("sequentiel");
+            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Séquentiel (.seq)", "*.seq");
+            fileChooser.getExtensionFilters().add(extensionFilter);
+            fileChooser.setSelectedExtensionFilter(extensionFilter);
+            File file = fileChooser.showOpenDialog(StageManager.homeStage);
+            if (file != null){
+                SaveManager.setProjectPath(file.getAbsolutePath());
+                SaveManager.updateTitle();
+                lockPane(false);
+                SequentielSave sequentielSave = new SequentielSave(SaveManager.getProjectPath());
+                try {
+                    sequentielSave.loadSeqFile();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+                for (int i = 0; i < sequentielSave.getSequentielSize().getY()-1; i++) {
+                    System.out.println("Y" + i);
+                    mainGrid.getRowConstraints().add(new RowConstraints());
+                }
+                for (int i = 0; i < sequentielSave.getSequentielSize().getX()-1; i++) {
+                    mainGrid.getColumnConstraints().add(new ColumnConstraints());
+                    System.out.println("Y" + i);
+                }
+                for (String url : sequentielSave.getPictoMap().keySet()) {
+                    mainGrid.getChildren().
+                }
+
+                for (ColumnConstraints columnConstraint : mainGrid.getColumnConstraints()) {
+                    columnConstraint.setPrefWidth(mainGrid.getWidth()/mainGrid.getColumnCount());
+                    columnConstraint.setMaxWidth(mainGrid.getWidth()/mainGrid.getColumnCount());
+                    columnConstraint.setMinWidth(mainGrid.getWidth()/mainGrid.getColumnCount());
+                    columnConstraint.setHgrow(Priority.ALWAYS);
+                    columnConstraint.setFillWidth(true);
+                    columnConstraint.setHalignment(HPos.CENTER);
+                }
+
+                for (RowConstraints rowConstraint : mainGrid.getRowConstraints()) {
+                    rowConstraint.setPrefHeight(mainGrid.getHeight()/mainGrid.getRowCount());
+                    rowConstraint.setMaxHeight(mainGrid.getHeight()/mainGrid.getRowCount());
+                    rowConstraint.setMinHeight(mainGrid.getHeight()/mainGrid.getRowCount());
+                    rowConstraint.setVgrow(Priority.ALWAYS);
+                    rowConstraint.setFillHeight(true);
+                    rowConstraint.setValignment(VPos.CENTER);
+                }
+            }
+
+        }
     }
 
     @FXML
     void saveSequentiel(ActionEvent event) {
         System.out.println("Save Seq");
-        //Si chemin spécifier
-            //save
-        //sinon
-            //open Explorer ==> Choix du nom
-            //Save
+        SequentielSave sequentielSave = new SequentielSave(SaveManager.getProjectPath());
+        sequentielSave.convertHashmap(coordHashMap,mainGrid);
+        try {
+            sequentielSave.saveSeqFile();
+        } catch (IOException e) {
+            Alerts.showAlertWithoutHeaderText(Alert.AlertType.ERROR, "Erreur", "Nous avons rencontré une erreur dans la sauvegarde.");
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void closeExistingSequentiel(ActionEvent event) {
+        mainGrid.getChildren().clear();
+        SaveManager.setProjectPath("");
+        SaveManager.updateTitle();
+        pictoAPIList.getItems().clear();
+        pictoSearchBar.clear();
+        lockPane(true);
     }
     @FXML
     void initialize(){
@@ -110,6 +201,59 @@ public class Controller_Principal {
             }
         });
         initDragAndDrop();
+
+        if (!SaveManager.isProjectPathDefined()){
+            lockPane(true);
+        }
+
+        mainPane.setOnMouseClicked(mouseEvent -> {
+            if (!SaveManager.isProjectPathDefined()){
+                Alerts.showAlertWithoutHeaderText(Alert.AlertType.ERROR, "Vous n'avez pas créer de projet", "Merci de créer un nouveau Séquentiel avant !");
+            }
+        });
+
+
+        List<String> rawKeywords = ARASAAC.getKeywords();
+
+        ContextMenu contextMenu = new ContextMenu();
+        pictoSearchBar.setContextMenu(contextMenu);
+
+        // Configuration de l'autocomplétion
+        pictoSearchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            contextMenu.getItems().clear();
+            if (!newValue.isEmpty()) {
+                int count = 0;
+                for (String keyword : rawKeywords) {
+                    if (keyword.toLowerCase().startsWith(newValue.toLowerCase())) {
+                        MenuItem menuItem = new MenuItem(keyword);
+                        menuItem.setOnAction(event -> {
+                            pictoSearchBar.setText(keyword);
+                            contextMenu.hide();
+                        });
+                        contextMenu.getItems().add(menuItem);
+                        count++;
+                        if (count >= 10) break; // Limite le nombre d'éléments à 10.
+                    }
+                }
+                if (!contextMenu.getItems().isEmpty()) {
+                    contextMenu.show(pictoSearchBar, Side.BOTTOM, 0, 0);
+                } else {
+                    contextMenu.hide();
+                }
+            } else {
+                contextMenu.hide();
+            }
+        });
+
+
+        // Configuration des touches pressées
+        pictoSearchBar.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.DOWN && contextMenu.isShowing()) {
+                // Met l'accent sur le premier élément du menu lorsque l'utilisateur appuie sur la touche bas
+                contextMenu.getSkin().getNode().requestFocus();
+                ((MenuItem)contextMenu.getItems().get(0)).fire();
+            }
+        });
     }
 
     private int getColumnIndex(double x) {
@@ -132,6 +276,8 @@ public class Controller_Principal {
                 Dragboard dragboard = pictoAPIList.startDragAndDrop(TransferMode.MOVE);
                 ClipboardContent content = new ClipboardContent();
                 content.putImage(selectedImageView.getImage());
+                System.out.println(selectedImageView.getImage().getUrl());
+                currentImageView=selectedImageView;
                 dragboard.setContent(content);
             }
 
@@ -165,8 +311,9 @@ public class Controller_Principal {
                 imageView.setFitHeight(mainGrid.getHeight()/mainGrid.getRowCount());
 
                 mainGrid.add(imageView, columnIndex, rowIndex);
-
+                coordHashMap.put(currentImageView, new PictogramCoord(columnIndex,rowIndex));
                 success = true;
+
             }
 
             event.setDropCompleted(success);
@@ -219,6 +366,16 @@ public class Controller_Principal {
                 imageView.setFitHeight(mainGrid.getHeight()/mainGrid.getRowCount());
             }
         }
+    }
+
+    private void lockPane(boolean lock){
+        pictoSearchBar.setDisable(lock);
+        mainGrid.setDisable(lock);
+        pictoAPIList.setDisable(lock);
+        searchBTN.setDisable(lock);
+        saveSeqItem.setDisable(lock);
+        exportSeqItem.setDisable(lock);
+        closeSeqItem.setDisable(lock);
     }
 
 }

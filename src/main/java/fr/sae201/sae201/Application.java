@@ -1,6 +1,7 @@
 package fr.sae201.sae201;
 
 import fr.sae201.sae201.models.StageManager;
+import fr.sae201.sae201.utils.ARASAAC;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -11,11 +12,7 @@ public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
         showHome(stage);
-
-        //Récupère le pictogramme
-        //JsonNode res = ARASAAC.getPictogrammeURL(31348, false, true, "none", PictogramActions.NONE, PictogramResolution.SMALL, PictogramSkin.WHITE, PictogramHair.BROWN);
-        //System.out.println(res.get("image")); ==> lien .png
-
+        //ARASAAC.getKeywords();
     }
 
 

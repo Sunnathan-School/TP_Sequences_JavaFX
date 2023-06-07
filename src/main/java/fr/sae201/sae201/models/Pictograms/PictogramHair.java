@@ -1,6 +1,8 @@
 package fr.sae201.sae201.models.Pictograms;
 
-public enum PictogramHair {
+import java.io.Serializable;
+
+public enum PictogramHair implements Serializable {
     BLONDE("blonde"),
     BROWN("brown"),
     DARK_BROWN("darkBrown"),
