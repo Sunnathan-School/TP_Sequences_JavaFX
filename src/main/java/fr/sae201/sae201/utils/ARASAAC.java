@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 public class ARASAAC {
 
@@ -31,9 +33,12 @@ public class ARASAAC {
         }
     }
 
-    public static void getKeywords(){
+    public static List<String> getKeywords(){
         try {
-            System.out.println(sendGetRequest(API_URL + "/keywords/" + LANG).toString());
+            String keyWords=sendGetRequest(API_URL + "/keywords/" + LANG).toString();
+            String[] keywordsArray = keyWords.replace("\"", "").split(",");
+            List<String> keywordList = Arrays.asList(keywordsArray);
+            return keywordList;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

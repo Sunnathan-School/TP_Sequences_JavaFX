@@ -12,7 +12,10 @@ import fr.sae201.sae201.utils.Alerts;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -26,7 +29,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,6 +52,8 @@ public class Controller_Principal {
     private MenuItem closeSeqItem;
     @FXML
     private ListView<ImageView> pictoAPIList;
+
+    private String[] keywordsArray;
 
     @FXML
     private SplitPane mainPane;
@@ -194,6 +202,7 @@ public class Controller_Principal {
 
     @FXML
     void initialize(){
+        mainGrid.getStyleClass().add("gridpane");
         pictoSearchBar.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 searchBTN.fire();
@@ -306,6 +315,8 @@ public class Controller_Principal {
                 autoResizeGridPane(mainGrid);
 
                 ImageView imageView = new ImageView(image);
+                //Pane pane = new Pane();
+                //pane.getChildren().add(imageView);
                 imageView.setFitWidth(mainGrid.getWidth()/mainGrid.getColumnCount());
                 imageView.setPreserveRatio(true);
                 imageView.setFitHeight(mainGrid.getHeight()/mainGrid.getRowCount());
@@ -345,9 +356,11 @@ public class Controller_Principal {
             columnConstraint.setHgrow(Priority.ALWAYS);
             columnConstraint.setFillWidth(true);
             columnConstraint.setHalignment(HPos.CENTER);
+
         }
 
         for (RowConstraints rowConstraint : gridPane.getRowConstraints()) {
+
             rowConstraint.setPrefHeight(gridPane.getHeight()/gridPane.getRowCount());
             rowConstraint.setMaxHeight(gridPane.getHeight()/gridPane.getRowCount());
             rowConstraint.setMinHeight(gridPane.getHeight()/gridPane.getRowCount());
