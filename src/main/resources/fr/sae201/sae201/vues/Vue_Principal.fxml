@@ -16,11 +16,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="1032.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.sae201.sae201.controller.Controller_Principal">
+<BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="1032.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.sae201.sae201.controller.Controller_Principal">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="Fichiers">
+          <Menu fx:id="fileMenu" mnemonicParsing="false" text="Fichiers">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#createNewSequentiel" text="Nouveau" />
                   <MenuItem fx:id="openSeqItem" mnemonicParsing="false" onAction="#openExistingSequentiel" text="Ouvrir" />
@@ -30,7 +30,10 @@
                   <MenuItem fx:id="exportSeqItem" mnemonicParsing="false" text="Exporter" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="A Propos" />
+          <Menu fx:id="aboutMenu" mnemonicParsing="false" text="Aide">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showAboutModal" text="A Propos" />
+               </items></Menu>
         </menus>
       </MenuBar>
    </top>
@@ -57,12 +60,12 @@
                </padding>
             </VBox>
             <GridPane fx:id="mainGrid" alignment="CENTER" gridLinesVisible="true">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
             </GridPane>
         </items>
       </SplitPane>

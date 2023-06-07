@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class SequentielSave implements Serializable {
 
-    HashMap<String, PictogramCoord> pictoMap;
+    HashMap<PictogramCoord, String> pictoMap;
     SequentielSize sequentielSize;
     private String filePath;
 
@@ -23,9 +23,9 @@ public class SequentielSave implements Serializable {
     public void loadSeqFile() throws FileNotFoundException {
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath));
-            HashMap<HashMap<String, PictogramCoord>, SequentielSize> hashMap;
-            hashMap = (HashMap<HashMap<String, PictogramCoord>, SequentielSize>) ois.readObject();
-            for (HashMap<String, PictogramCoord> stringPictogramCoordHashMap : hashMap.keySet()) {
+            HashMap<HashMap<PictogramCoord, String>, SequentielSize> hashMap;
+            hashMap = (HashMap<HashMap<PictogramCoord, String>, SequentielSize>) ois.readObject();
+            for (HashMap<PictogramCoord, String> stringPictogramCoordHashMap : hashMap.keySet()) {
                 pictoMap = stringPictogramCoordHashMap;
             }
             sequentielSize = hashMap.get(pictoMap);
@@ -37,7 +37,7 @@ public class SequentielSave implements Serializable {
         }
     }
 
-    public HashMap<String, PictogramCoord> getPictoMap() {
+    public HashMap<PictogramCoord, String> getPictoMap() {
         return pictoMap;
     }
 
@@ -47,15 +47,16 @@ public class SequentielSave implements Serializable {
 
     public void saveSeqFile() throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath));
-        HashMap<HashMap<String, PictogramCoord>, SequentielSize> hashMap = new HashMap<>();
+        HashMap<HashMap<PictogramCoord,String>, SequentielSize> hashMap = new HashMap<>();
         hashMap.put(pictoMap, sequentielSize);
         oos.writeObject(hashMap);
         oos.close();
     }
 
-    public void convertHashmap(HashMap<ImageView, PictogramCoord> map, GridPane gridPane){
-        for (ImageView imageView : map.keySet()) {
-            pictoMap.put(imageView.getImage().getUrl(), map.get(imageView));
+    public void convertHashmap(HashMap<PictogramCoord, ImageView> map, GridPane gridPane){
+
+        for (PictogramCoord coord : map.keySet()) {
+            pictoMap.put(coord, map.get(coord).getImage().getUrl());
         }
         sequentielSize = new SequentielSize(gridPane.getColumnCount(), gridPane.getRowCount());
     }

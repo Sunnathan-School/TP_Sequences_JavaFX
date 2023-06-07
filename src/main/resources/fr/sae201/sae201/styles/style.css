@@ -1,0 +1,46 @@
+.menu:hover{
+    -fx-background-color: #717191;
+    }
+#pictoSearchBar{
+    -fx-background-color: rgba(113, 113, 113, 0.25);
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+#searchLabel{
+    -fx-font-size: 14px;
+}
+*{
+    -fx-font-family: Rubik;
+}
+#mainBorderPane{
+    -fx-background-color: #717171;
+}
+#menuBar{
+    -fx-background-color: #717171;
+    -fx-font-size: 14;
+
+    -fx-text-fill: white;
+}
+#searchBTN{
+    -fx-background-color: #E39219 ;
+    -fx-text-fill: white;
+    -fx-border-color: black;
+    -fx-border-radius: 25px;
+    -fx-background-radius: 25px;
+}
+
+.gridpane{
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+}
+.scroll-bar{
+    -fx-background-color: transparent;
+}
+.scroll-bar .thumb{
+    -fx-background-color: rgba(100, 100, 100, 0.48);
+}
+.scroll-bar .increment-arrow ,
+.scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-background-color: rgba(100, 100, 100, 0.48);
+}

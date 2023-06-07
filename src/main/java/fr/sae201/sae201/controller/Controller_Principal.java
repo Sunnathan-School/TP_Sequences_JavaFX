@@ -1,6 +1,7 @@
 package fr.sae201.sae201.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.sae201.sae201.Application;
 import fr.sae201.sae201.models.Pictograms.Pictogram;
 import fr.sae201.sae201.models.Pictograms.PictogramCoord;
 import fr.sae201.sae201.models.SaveManager;
@@ -14,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -39,6 +41,8 @@ public class Controller_Principal {
     @FXML
     private GridPane mainGrid;
     @FXML
+    private Menu aboutMenu;
+    @FXML
     private MenuItem closeSeqItem;
     @FXML
     private ListView<ImageView> pictoAPIList;
@@ -58,7 +62,7 @@ public class Controller_Principal {
     private List<Task<ImageView>> imageLoadingTasks;
 
     private ImageView currentImageView;
-    private HashMap<ImageView, PictogramCoord> coordHashMap = new HashMap<>();
+    private HashMap<PictogramCoord, ImageView> coordHashMap = new HashMap<>();
     @FXML
     void searchPicto(ActionEvent event) {
         pictoAPIList.getItems().clear();
@@ -107,9 +111,34 @@ public class Controller_Principal {
             fileChooser.setSelectedExtensionFilter(extensionFilter);
             File file = fileChooser.showSaveDialog(StageManager.homeStage);
             if (file != null){
+//                mainGrid.getChildren().clear();
+//                mainGrid.getColumnConstraints().clear();
+//                mainGrid.getRowConstraints().clear();
+//                mainGrid.getStyleClass().add("grid-pane");
+//                mainGrid.setAlignment(Pos.CENTER);
+//                mainGrid.setGridLinesVisible(true);
+
+//                ColumnConstraints columnConstraints = new ColumnConstraints();
+//                columnConstraints.setHgrow(Priority.SOMETIMES);
+//                columnConstraints.setMinWidth(10);
+//                columnConstraints.setPrefWidth(100);
+//                mainGrid.getColumnConstraints().add(columnConstraints);
+//
+//                RowConstraints rowConstraints = new RowConstraints();
+//                rowConstraints.setMinHeight(10);
+//                rowConstraints.setPrefHeight(30);
+//                rowConstraints.setVgrow(Priority.SOMETIMES);
+//                mainGrid.getRowConstraints().add(rowConstraints);
+                //mainGrid.getChildren().clear();
+                //mainGrid.getColumnConstraints().clear();
+                //mainGrid.getRowConstraints().clear();
                 SaveManager.setProjectPath(file.getAbsolutePath());
                 SaveManager.updateTitle();
                 lockPane(false);
+
+                mainGrid.setGridLinesVisible(true);
+                //addRowAndColumnToGridPane(mainGrid, 0,0);
+                autoResizeGridPane(mainGrid);
             }
 
         }
@@ -117,58 +146,7 @@ public class Controller_Principal {
 
     @FXML
     void openExistingSequentiel(ActionEvent event) {
-        System.out.println("Open Seq");
-        if (mainGrid.getChildren().size() > 1){  //Sauvegarde si gridPane n'est pas vide
-            Alerts.showAlertWithoutHeaderText(Alert.AlertType.INFORMATION, "Attention", "Vous avez déjà un projet en cours, merci de le fermer avant !");
-        }else {//ouverture popUp
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setInitialFileName("sequentiel");
-            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Séquentiel (.seq)", "*.seq");
-            fileChooser.getExtensionFilters().add(extensionFilter);
-            fileChooser.setSelectedExtensionFilter(extensionFilter);
-            File file = fileChooser.showOpenDialog(StageManager.homeStage);
-            if (file != null){
-                SaveManager.setProjectPath(file.getAbsolutePath());
-                SaveManager.updateTitle();
-                lockPane(false);
-                SequentielSave sequentielSave = new SequentielSave(SaveManager.getProjectPath());
-                try {
-                    sequentielSave.loadSeqFile();
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-                for (int i = 0; i < sequentielSave.getSequentielSize().getY()-1; i++) {
-                    System.out.println("Y" + i);
-                    mainGrid.getRowConstraints().add(new RowConstraints());
-                }
-                for (int i = 0; i < sequentielSave.getSequentielSize().getX()-1; i++) {
-                    mainGrid.getColumnConstraints().add(new ColumnConstraints());
-                    System.out.println("Y" + i);
-                }
-                for (String url : sequentielSave.getPictoMap().keySet()) {
-                    mainGrid.getChildren().
-                }
 
-                for (ColumnConstraints columnConstraint : mainGrid.getColumnConstraints()) {
-                    columnConstraint.setPrefWidth(mainGrid.getWidth()/mainGrid.getColumnCount());
-                    columnConstraint.setMaxWidth(mainGrid.getWidth()/mainGrid.getColumnCount());
-                    columnConstraint.setMinWidth(mainGrid.getWidth()/mainGrid.getColumnCount());
-                    columnConstraint.setHgrow(Priority.ALWAYS);
-                    columnConstraint.setFillWidth(true);
-                    columnConstraint.setHalignment(HPos.CENTER);
-                }
-
-                for (RowConstraints rowConstraint : mainGrid.getRowConstraints()) {
-                    rowConstraint.setPrefHeight(mainGrid.getHeight()/mainGrid.getRowCount());
-                    rowConstraint.setMaxHeight(mainGrid.getHeight()/mainGrid.getRowCount());
-                    rowConstraint.setMinHeight(mainGrid.getHeight()/mainGrid.getRowCount());
-                    rowConstraint.setVgrow(Priority.ALWAYS);
-                    rowConstraint.setFillHeight(true);
-                    rowConstraint.setValignment(VPos.CENTER);
-                }
-            }
-
-        }
     }
 
     @FXML
@@ -186,13 +164,34 @@ public class Controller_Principal {
 
     @FXML
     void closeExistingSequentiel(ActionEvent event) {
-        mainGrid.getChildren().clear();
         SaveManager.setProjectPath("");
         SaveManager.updateTitle();
         pictoAPIList.getItems().clear();
         pictoSearchBar.clear();
+        Node node = mainGrid.getChildren().get(0);
+
+        mainGrid.getChildren().clear();
+        mainGrid.getChildren().add(0,node);
+        System.out.println(node.toString());
+        Group t = (Group) node;
+        mainGrid.setGridLinesVisible(false);
+        for (Node child : t.getChildren()) {
+            System.out.println("Line False" + child.toString());
+        }
+        t.getChildren().clear();
+        mainGrid.setGridLinesVisible(true);
+
+        for (Node child : t.getChildren()) {
+            System.out.println("Line True" + child.toString());
+        }
         lockPane(true);
     }
+    @FXML
+    void showAboutModal(ActionEvent event) throws IOException {
+        Application.showAboutModal();
+    }
+
+
     @FXML
     void initialize(){
         pictoSearchBar.setOnKeyPressed(event -> {
@@ -304,16 +303,15 @@ public class Controller_Principal {
                 int rowIndex = getRowIndex(event.getY());
 
                 addRowAndColumnToGridPane(mainGrid,columnIndex,rowIndex);
+                autoResizeGridPane(mainGrid);
 
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(mainGrid.getWidth()/mainGrid.getColumnCount());
                 imageView.setPreserveRatio(true);
                 imageView.setFitHeight(mainGrid.getHeight()/mainGrid.getRowCount());
-
                 mainGrid.add(imageView, columnIndex, rowIndex);
-                coordHashMap.put(currentImageView, new PictogramCoord(columnIndex,rowIndex));
+                coordHashMap.put(new PictogramCoord(columnIndex,rowIndex), currentImageView);
                 success = true;
-
             }
 
             event.setDropCompleted(success);
@@ -337,8 +335,9 @@ public class Controller_Principal {
         if (columnIndex == numCols - 1 || numCols == 0) {
             gridPane.getColumnConstraints().add(new ColumnConstraints());
         }
+    }
 
-
+    private void autoResizeGridPane(GridPane gridPane){
         for (ColumnConstraints columnConstraint : gridPane.getColumnConstraints()) {
             columnConstraint.setPrefWidth(gridPane.getWidth()/gridPane.getColumnCount());
             columnConstraint.setMaxWidth(gridPane.getWidth()/gridPane.getColumnCount());

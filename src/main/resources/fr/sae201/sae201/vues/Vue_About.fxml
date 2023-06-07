@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-Infinity" prefWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.sae201.sae201.controller.Controller_AboutModal">
+    <children>
+        <Label text="A Propos">
+            <font>
+                <Font size="19.0" />
+            </font>
+        </Label>
+        <Label text="API utilisée : ARASAAC">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label text="A Propos">
+            <font>
+                <Font size="19.0" />
+            </font>
+        </Label>
+        <Label text="IDE utilisé :">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label text="InteliJ" wrapText="true" />
+        <Label text="Langage utilisé :">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label text="JavaFX" />
+        <Label text="Membres du Groupe :">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label text="Eliot DESMOTS" wrapText="true" />
+        <Label text="Tom MARTIN" />
+        <Label text="Théo GRENET" />
+        <Label text="Nathan FOUGERAY" />
+        <Button mnemonicParsing="false" onAction="#closeModal" text="OK" />
+    </children>
+</VBox>
+
