@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sae201.sae201.models.Pictograms.PictogramActions;
 import fr.sae201.sae201.models.Pictograms.PictogramHair;
-import fr.sae201.sae201.models.Pictograms.PictogramResolution;
 import fr.sae201.sae201.models.Pictograms.PictogramSkin;
 
 import java.io.BufferedReader;
@@ -78,21 +77,20 @@ public class ARASAAC {
     }
 
     public static JsonNode getPictogrammeURL(int pictoId, boolean plural, boolean color,
-                                      String backgroundColor, PictogramActions action,
-                                      PictogramResolution resolution, PictogramSkin skin,
+                                      String backgroundColor, PictogramActions action, PictogramSkin skin,
                                       PictogramHair hair){
         String url = API_URL + "/pictograms/" + pictoId;
+
         url += "?plural=" + plural;
         url += "&color=" + color;
-        if (!backgroundColor.equals("none")){
+        //TODO: UNCOMMENT POur activer le background color
+        /*if (!backgroundColor.equals("none")){
             url += "&backgroundColor=" + backgroundColor;
-        }
+        }*/
 
         if (action != PictogramActions.NONE){
             url += "&action=" + action.getAction();
         }
-
-        url += "&resolution=" + resolution.getSize();
         url += "&skin=" + skin.getSkin();
         url += "&hair=" + hair.getHair();
         url += "&url=true";

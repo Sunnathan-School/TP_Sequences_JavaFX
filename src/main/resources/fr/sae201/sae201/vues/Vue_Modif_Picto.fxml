@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="288.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.sae201.sae201.controller.Controller_Modif_Picto">
+   <left>
+      <VBox prefHeight="300.0" prefWidth="141.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="63.0" prefWidth="141.0">
+               <children>
+                  <Label text="Couleur de peau" />
+                  <ChoiceBox fx:id="skinColorChoiceBox" prefWidth="150.0" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="70.0" prefWidth="141.0">
+               <children>
+                  <Label text="Couleur de cheveux" />
+                  <ChoiceBox fx:id="hairColorChoiceBox" prefWidth="150.0" />
+               </children>
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="70.0" prefWidth="141.0">
+               <children>
+                  <Label text="Action" />
+                  <ChoiceBox fx:id="actionChoiceBox" prefWidth="150.0" />
+               </children>
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+            </VBox>
+         </children>
+      </VBox>
+   </left>
+   <right>
+      <VBox prefHeight="300.0" prefWidth="174.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="34.0" prefWidth="174.0">
+               <children>
+                  <CheckBox fx:id="pluralCheckBox" mnemonicParsing="false" onAction="#onUpdateController" text="Pluriel">
+                     <HBox.margin>
+                        <Insets right="16.0" />
+                     </HBox.margin>
+                  </CheckBox>
+                  <CheckBox fx:id="colorCheckBox" mnemonicParsing="false" onAction="#onUpdateController" text="Couleur" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <VBox prefHeight="64.0" prefWidth="174.0">
+               <children>
+                  <Label text="Texte" />
+                  <TextField fx:id="pictoText" onKeyTyped="#onUpdateController" />
+                  <VBox prefHeight="70.0" prefWidth="141.0">
+                     <children>
+                        <Label text="Emplacement du texte" />
+                        <ChoiceBox fx:id="pictoTextPosition" prefWidth="150.0" />
+                     </children>
+                     <padding>
+                        <Insets top="8.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="64.0" prefWidth="174.0">
+               <children>
+                  <Label text="Couleur de fond" />
+                  <ColorPicker fx:id="backgroundColorPicker" disable="true" />
+               </children>
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+            </VBox>
+         </children>
+      </VBox>
+   </right>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#cancelEdit" text="Annuler">
+               <HBox.margin>
+                  <Insets right="32.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#applyEdit" text="Confirmer" />
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Rendu" />
+            <VBox fx:id="previewVbox" alignment="CENTER" prefHeight="214.0" prefWidth="213.0" style="-fx-border-color: black;" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

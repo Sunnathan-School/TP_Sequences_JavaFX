@@ -3,7 +3,7 @@ package fr.sae201.sae201.models.Pictograms;
 public enum PictogramSkin {
     WHITE("white"),
     BLACK("black"),
-    ASIAN("asian"),
+    ASSIAN("assian"),
     MULATTO("mulatto"),
     AZTEC("aztec");
 
