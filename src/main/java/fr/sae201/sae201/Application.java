@@ -1,6 +1,7 @@
 package fr.sae201.sae201;
 
 import fr.sae201.sae201.controller.Controller_Modif_Picto;
+import fr.sae201.sae201.controller.Controller_Principal;
 import fr.sae201.sae201.models.Pictograms.Pictogram;
 import fr.sae201.sae201.models.StageManager;
 import fr.sae201.sae201.utils.ARASAAC;
@@ -21,7 +22,9 @@ public class Application extends javafx.application.Application {
 
     public void showHome(Stage stage) throws IOException {
         StageManager.homeStage = stage;
+
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("vues/Vue_Principal.fxml"));
+        StageManager.homeController = fxmlLoader;
         Scene scene = new Scene(fxmlLoader.load());
         //scene.getStylesheets().add(String.valueOf(Application.class.getResource("styles/style.css")));
         stage.setTitle("Séquentiels");
@@ -44,12 +47,13 @@ public class Application extends javafx.application.Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("vues/Vue_Modif_Picto.fxml"));
             Parent root = fxmlLoader.load();
+
             modifyPictoStage.setScene(new Scene(root));
             modifyPictoStage.setTitle("My modal window");
             modifyPictoStage.initModality(Modality.WINDOW_MODAL);
             modifyPictoStage.initOwner(pictogram.getScene().getWindow());
             modifyPictoStage.show();
-            ((Controller_Modif_Picto)fxmlLoader.getController()).setEditedPicto(pictogram);
+            ((Controller_Modif_Picto)fxmlLoader.getController()).setEditedPicto(pictogram, StageManager.homeController.getController());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -29,9 +29,11 @@ public class Pictogram extends VBox implements Serializable{
 //plural, color, backgroundColor,action,skin,hair
     //public Pictogram(Integer id, boolean plural, boolean color, String backgroundColor, PictogramActions action, PictogramSkin skin, PictogramHair hair, PictogramTextPosition textPosition
     public Pictogram(Integer id){
+        super();
         System.out.println("Picto Construct");
         this.pictoId=id;
-        String imgUrl = ARASAAC.getPictogrammeURL(id).get("image").asText();
+        //String imgUrl = ARASAAC.getPictogrammeURL(id).get("image").asText();
+        String imgUrl = ARASAAC.getPictogrammeURL(getPictoId(), isPlural(), isColor(), getBackgroundColor(),getAction(),getSkin(),getHair()).get("image").asText();
         imageView = new ImageView(new Image(imgUrl));
         imageView.setFitHeight(100);
         imageView.setPreserveRatio(true);
@@ -39,7 +41,7 @@ public class Pictogram extends VBox implements Serializable{
         setAlignment(Pos.CENTER);
 
 
-        if (textPosition.getPosition().equals(PictogramTextPosition.TOP)){
+        if (textPosition.equals(PictogramTextPosition.TOP)){
             getChildren().addAll(label, imageView);
         }else {
             getChildren().addAll(imageView,label);
@@ -54,7 +56,7 @@ public class Pictogram extends VBox implements Serializable{
         });
 
     }
-
+/*
     public Pictogram(Integer id, boolean plural, boolean color, String backgroundColor, PictogramActions action,
                      PictogramSkin skin, PictogramHair hair, PictogramTextPosition textPosition, String txt){
         this.textPosition = textPosition;
@@ -83,23 +85,20 @@ public class Pictogram extends VBox implements Serializable{
         setOnMouseExited(event -> {
             setStyle("-fx-background-color: transparent;");
         });
-    }
+    }*/
 
 
-    public Pictogram updatePictogram(){
-        setImageView(new ImageView(new Image(
-                String.valueOf(ARASAAC.getPictogrammeURL(pictoId, plural, color, backgroundColor,action,skin,hair).get("image").asText())
-        )));
-
-        imageView.setImage(new Image(
-                String.valueOf(ARASAAC.getPictogrammeURL(pictoId, plural, color, backgroundColor,action,skin,hair).get("image").asText())
-        ));
-
+    public void updatePictogram(){
         System.out.println("Picto Updated");
-        return this;
-
+        String url = ARASAAC.getPictogrammeURL(getPictoId(), isPlural(), isColor(), getBackgroundColor(),getAction(),getSkin(),getHair()).get("image").asText();
+        this.imageView.setImage(new Image(url));
+        getChildren().clear();
+        if (textPosition.equals(PictogramTextPosition.TOP)){
+            getChildren().addAll(label, imageView);
+        }else {
+            getChildren().addAll(imageView,label);
+        }
     }
-
 
     public Pictogram clonePictogram() {
         Pictogram clonedPictogram = new Pictogram(this.pictoId);  // Créer une nouvelle instance du pictogramme
@@ -114,7 +113,7 @@ public class Pictogram extends VBox implements Serializable{
 
         // Copier les éléments visuels (ImageView et Label)
         clonedPictogram.setLabel(new Label(this.label.getText()));
-        clonedPictogram.setImageView(getImageView());
+        clonedPictogram.setImageView(this.imageView);
         return clonedPictogram;
     }
 
@@ -135,9 +134,7 @@ public class Pictogram extends VBox implements Serializable{
                 '}';
     }
     public ImageView getImageView() {
-        return new ImageView(new Image(
-                String.valueOf(ARASAAC.getPictogrammeURL(pictoId, plural, color, backgroundColor,action,skin,hair).get("image").asText())
-        ));
+        return imageView;
     }
     public Label getLabel() {
         return label;

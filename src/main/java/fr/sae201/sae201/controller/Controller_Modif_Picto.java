@@ -1,14 +1,19 @@
 package fr.sae201.sae201.controller;
 
+import fr.sae201.sae201.Application;
 import fr.sae201.sae201.models.Pictograms.*;
+import fr.sae201.sae201.models.StageManager;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -42,6 +47,8 @@ public class Controller_Modif_Picto {
     @FXML
     private ChoiceBox<PictogramSkin> skinColorChoiceBox;
 
+    Controller_Principal controllerPrincipal;
+
     private Pictogram editedPicto;
     private Pictogram previewPicto;
 
@@ -68,11 +75,11 @@ public class Controller_Modif_Picto {
 
     }
 
-    public void setEditedPicto(Pictogram editedPicto) {
+    public void setEditedPicto(Pictogram editedPicto, Controller_Principal controllerPrincipal) {
         this.editedPicto = editedPicto;
         previewPicto = editedPicto.clonePictogram();
         previewVbox.getChildren().add(previewPicto);
-
+        this.controllerPrincipal = controllerPrincipal;
 
         skinColorChoiceBox.setValue(editedPicto.getSkin());
         hairColorChoiceBox.setValue(editedPicto.getHair());
@@ -94,6 +101,13 @@ public class Controller_Modif_Picto {
 
     @FXML
     void applyEdit(ActionEvent event) {
+        System.out.println("Tentative de changement de editedPicto");
+
+
+
+        Scene scene = (Scene) (((Node) event.getSource()).getScene());
+        controllerPrincipal.updatePicto(editedPicto, previewPicto);
+        ((Stage)scene.getWindow()).close();
 
     }
 
@@ -118,22 +132,23 @@ public class Controller_Modif_Picto {
         pictoText.setText(editedPicto.getLabel().getText());
         pictoTextPosition.setValue(editedPicto.getTextPosition());
         * */
-        Pictogram pictogram = new Pictogram(previewPicto.getPictoId(),
-                pluralCheckBox.isSelected(),colorCheckBox.isSelected(),(backgroundColorPicker.getValue().toString().substring(2,8)),
-                actionChoiceBox.getValue(),skinColorChoiceBox.getValue(),hairColorChoiceBox.getValue(),pictoTextPosition.getValue(), pictoText.getText());
-        /*previewPicto.setSkin(skinColorChoiceBox.getValue());
+        //Pictogram pictogram = new Pictogram(previewPicto.getPictoId(),
+        //        pluralCheckBox.isSelected(),colorCheckBox.isSelected(),(backgroundColorPicker.getValue().toString().substring(2,8)),
+         //       actionChoiceBox.getValue(),skinColorChoiceBox.getValue(),hairColorChoiceBox.getValue(),pictoTextPosition.getValue(), pictoText.getText());
+        previewPicto.setSkin(skinColorChoiceBox.getValue());
         previewPicto.setHair(hairColorChoiceBox.getValue());
         previewPicto.setAction(actionChoiceBox.getValue());
         previewPicto.setPlural(pluralCheckBox.isSelected());
         previewPicto.setColor(colorCheckBox.isSelected());
         previewPicto.setLabel(new Label(pictoText.getText()));
-        previewPicto.setTextPosition(pictoTextPosition.getValue());*/
+        previewPicto.setTextPosition(pictoTextPosition.getValue());
 
 
-        //previewPicto = previewPicto.updatePictogram();
+        previewPicto.updatePictogram();
         previewVbox.getChildren().clear();
-        System.out.println("[DBG] " + pictogram);
-        previewVbox.getChildren().add(pictogram);
+        System.out.println("[DBG] " + previewPicto);
+        System.out.println("[DBG] " + previewPicto.getImageView().getImage().getUrl());
+        previewVbox.getChildren().add(previewPicto);
 
     }
 }

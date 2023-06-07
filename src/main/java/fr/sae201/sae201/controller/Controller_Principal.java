@@ -210,4 +210,17 @@ public class Controller_Principal {
     void flowPaneDragOver(DragEvent event) {
 
     }
+
+    public void updatePicto(Pictogram source, Pictogram newPicto){
+        for (Node child : flowPane.getChildren()) {
+            System.out.println(child);
+        }
+        System.out.println("To remove" + source);
+        int index = flowPane.getChildren().indexOf(source);
+        System.out.println(index);
+        flowPane.getChildren().remove(source);
+
+        flowPane.getChildren().add(index, newPicto);
+
+    }
 }
