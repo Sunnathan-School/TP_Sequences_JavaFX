@@ -69,8 +69,6 @@ public class ARASAAC {
             if (!response.isEmpty()){
                 // Traitement de la réponse
                 ObjectMapper objectMapper = new ObjectMapper();
-                //System.out.println(objectMapper.readTree(response.toString()));
-
                 return objectMapper.readTree(response.toString());
             }
            return null;
@@ -83,7 +81,7 @@ public class ARASAAC {
 
         url += "?plural=" + plural;
         url += "&color=" + color;
-        //TODO: UNCOMMENT POur activer le background color
+        //TODO: Fix le background color (chercher pourquoi le backgroundColor n'est pas pris en compte par ARASAAC)
         /*if (!backgroundColor.equals("none")){
             url += "&backgroundColor=" + backgroundColor;
         }*/

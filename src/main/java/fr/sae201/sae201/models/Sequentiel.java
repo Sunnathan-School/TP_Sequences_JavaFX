@@ -48,7 +48,6 @@ public class Sequentiel implements Serializable {
         for (Node child : flowPane.getChildren()) {
             PictogramSerializableAtrributes pictogramSerializableAtrributes = ((Pictogram) child).getAtrributes();
             pictograms.add(pictogramSerializableAtrributes);
-            //pictograms.set(flowPane.getChildren().indexOf(pictogram), pictogram);
         }
     }
 

@@ -35,7 +35,9 @@ public class Application extends javafx.application.Application {
         aboutModal.initModality(Modality.WINDOW_MODAL);
         aboutModal.setTitle("A propos");
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("vues/Vue_About.fxml"));
+
         Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(String.valueOf(Application.class.getResource("styles/style.css")));
         aboutModal.setScene(scene);
         aboutModal.showAndWait();
     }

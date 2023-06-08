@@ -41,21 +41,16 @@ import java.util.List;
 public class Controller_Principal {
     @FXML
     private MenuItem closeSeqItem;
-
     @FXML
     private MenuItem exportSeqItem;
-
     @FXML
     private ListView<Pictogram> pictoAPIList;
-
     @FXML
     private TextField pictoSearchBar;
-
     @FXML
     private MenuItem saveSeqItem;
     @FXML
     private ComboBox<String> pictoCategories;
-
     @FXML
     private FlowPane flowPane;
     @FXML
@@ -202,50 +197,66 @@ public class Controller_Principal {
 
     @FXML
     void initialize(){
-        String[] categories = {"...","Alimentation", "Loisirs", "Place", "Education", "Temps", "Divers", "Mobilité",
-                "Religion", "Travail", "Communication", "Documents", "Connaissances", "Objets"};
-
-        for (String category : categories) {
-            pictoCategories.getItems().add(category);
-        }
-        pictoCategories.getSelectionModel().select(0);
-
-        //AUTO COMPLETION
-        List<String> rawKeywords = ARASAAC.getKeywords();
-
-        ContextMenu contextMenu = new ContextMenu();
-        pictoSearchBar.setContextMenu(contextMenu);
-
-        pictoSearchBar.textProperty().addListener((observable, oldValue, newValue) -> {
-            contextMenu.getItems().clear();
-            if (!newValue.isEmpty()) {
-                int count = 0;
-                for (String keyword : rawKeywords) {
-                    if (keyword.toLowerCase().startsWith(newValue.toLowerCase())) {
-                        MenuItem menuItem = new MenuItem(keyword);
-                        menuItem.setOnAction(event -> {
-                            pictoSearchBar.setText(keyword);
-                            contextMenu.hide();
-                        });
-                        contextMenu.getItems().add(menuItem);
-                        count++;
-                        if (count >= 10) break; // Limite le nombre d'éléments à 10.
-                    }
-                }
-                if (!contextMenu.getItems().isEmpty()) {
-                    contextMenu.show(pictoSearchBar, Side.BOTTOM, 0, 0);
-                } else {
-                    contextMenu.hide();
-                }
-            } else {
-                contextMenu.hide();
-            }
-        });
-
+        //Vérouille tous les controls
         setLocked(true);
 
+        //Initialisation des catégories
+        initCategories();
+
+        //Initialisation de l'AutoCompletion
+        initAutoCompletion();
+
+        //Initialisation du clic droit sur un Pictogram
+        initPictoContextMenu();
+
+        //Initialisation de l'ajout des Pictograms
+        initPictoAdd();
+
+        //Initialisation de l'affichage des pictograms dans la listView
+        initPictoIntoListView();
+    }
+
+    private void initPictoIntoListView() {
+        //Picto dans listView
+        pictoAPIList.setCellFactory(param -> new ListCell<Pictogram>(){
+            private final VBox vbox = new VBox();
+            private final ImageView imageView = new ImageView();
+            {
+                vbox.getChildren().addAll(imageView);
+                vbox.setAlignment(Pos.CENTER);
+            }
+            @Override
+            protected void updateItem(Pictogram pictogram, boolean empty) {
+                super.updateItem(pictogram, empty);
+                if (empty || pictogram == null) {
+                    setGraphic(null);
+                } else {
+                    //ajustement du pictogrammme a la taille disponible
+                    imageView.setImage(new Image(pictogram.getImageView().getImage().getUrl()));
+                    imageView.setPreserveRatio(true);
+                    imageView.setFitWidth(100);
+                    setGraphic(vbox);
+                }
+            }
+        });
+    }
+
+    private void initPictoAdd() {
+        //Ajout Picto
+        pictoAPIList.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getClickCount() == 2){
+                Pictogram pictogram = pictoAPIList.getSelectionModel().getSelectedItem();
+                if (pictogram != null){
+                    flowPane.getChildren().add(pictogram.clonePictogram());
+                }
+            }
+        });
+    }
+
+    private void initPictoContextMenu() {
         //COntextMenu Picto
         flowPane.getChildren().addListener((ListChangeListener<Node>) change -> {
+
             for (Node child : flowPane.getChildren()) {
                 Pictogram pictogram = (Pictogram) child;
                 pictogram.setOnContextMenuRequested(contextMenuEvent -> {
@@ -269,11 +280,11 @@ public class Controller_Principal {
 
                     rightArrow.setFitWidth(20);
                     rightArrow.setPreserveRatio(true);
-
+                    //Pour chaque pictogramme du séquentiel permettre de le déplacer a droite ou à gauche
+                    //Déplacement à gauche
                     MenuItem moveLeft = new MenuItem("Déplacer a gauche");
                     moveLeft.setGraphic(leftArrow);
                     moveLeft.setOnAction(event -> {
-                        System.out.println("Déplacer a gauche");
                         int a = flowPane.getChildren().indexOf(pictogram);
                         if (a != 0){
                             int b = a-1;
@@ -286,6 +297,7 @@ public class Controller_Principal {
                         }
                     });
 
+                    //Déplacement à droite
                     MenuItem moveRight = new MenuItem("Déplacer a droite");
                     moveRight.setGraphic(rightArrow);
                     moveRight.setOnAction(event -> {
@@ -304,7 +316,7 @@ public class Controller_Principal {
                     });
 
 
-
+                    //Initialisation de la personnalisation
                     MenuItem personalize = new MenuItem("Personnaliser");
 
                     personalize.setGraphic(personalizeLogo);
@@ -314,6 +326,7 @@ public class Controller_Principal {
                         System.out.println("edit");
                     });
 
+                    //Initialisation de la suppression
                     MenuItem delete = new MenuItem("Supprimer");
 
                     delete.setGraphic(deleteLogo);
@@ -327,38 +340,53 @@ public class Controller_Principal {
                 });
             }
         });
-        //Ajout Picto
-        pictoAPIList.setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getClickCount() == 2){
-                Pictogram pictogram = pictoAPIList.getSelectionModel().getSelectedItem();
-                if (pictogram != null){
-                    //pictogram.setPrefHeight(100);
-                    flowPane.getChildren().add(pictogram.clonePictogram());
+    }
 
+    private void initCategories() {
+        //Liste des catégories de la comboBox
+        String[] categories = {"...","Alimentation", "Loisirs", "Place", "Education", "Temps", "Divers", "Mobilité",
+                "Religion", "Travail", "Communication", "Documents", "Connaissances", "Objets"};
+        //ajout des catégories dans la comboBox
+        for (String category : categories) {
+            pictoCategories.getItems().add(category);
+        }
+        //initialisation de l'élément afficher de base dans la comboBox
+        pictoCategories.getSelectionModel().select(0);
+    }
+
+    //Methode d'autocompletion
+    private void initAutoCompletion() {
+        //AUTO COMPLETION
+        //récuperation des mots clés disponibles
+        List<String> rawKeywords = ARASAAC.getKeywords();
+        ContextMenu contextMenu = new ContextMenu();
+        pictoSearchBar.setContextMenu(contextMenu);
+
+        pictoSearchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            contextMenu.getItems().clear();
+            if (!newValue.isEmpty()) {
+                int count = 0;
+                //parcours de l'ensemble des mots clés
+                for (String keyword : rawKeywords) {
+                    //affichage uniquement des mots clés correspondant avec ce qu'a ecrit l'utilisateur
+                    if (keyword.toLowerCase().startsWith(newValue.toLowerCase())) {
+                        MenuItem menuItem = new MenuItem(keyword);
+                        menuItem.setOnAction(event -> {
+                            pictoSearchBar.setText(keyword);
+                            contextMenu.hide();
+                        });
+                        contextMenu.getItems().add(menuItem);
+                        count++;
+                        if (count >= 10) break; // Limite le nombre d'éléments à 10.
+                    }
                 }
-            }
-        });
-
-        //Picto dans listView
-        pictoAPIList.setCellFactory(param -> new ListCell<Pictogram>(){
-            private final VBox vbox = new VBox();
-            private final ImageView imageView = new ImageView();
-            {
-                vbox.getChildren().addAll(imageView);
-                vbox.setAlignment(Pos.CENTER);
-            }
-            @Override
-            protected void updateItem(Pictogram pictogram, boolean empty) {
-                super.updateItem(pictogram, empty);
-                if (empty || pictogram == null) {
-                    setGraphic(null);
+                if (!contextMenu.getItems().isEmpty()) {
+                    contextMenu.show(pictoSearchBar, Side.BOTTOM, 0, 0);
                 } else {
-                    imageView.setImage(new Image(pictogram.getImageView().getImage().getUrl()));
-                    imageView.setPreserveRatio(true);
-                    imageView.setFitWidth(100);
-
-                    setGraphic(vbox);
+                    contextMenu.hide();
                 }
+            } else {
+                contextMenu.hide();
             }
         });
     }

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="340.0" spacing="10.0" style="-fx-background-color: #DFEDF6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.redesignmodifpicto.HelloController">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="340.0" spacing="10.0" style="-fx-background-color: #DFEDF6;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.sae201.sae201.controller.Controller_AboutModal">
     <children>
         <Label alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="72.0" prefWidth="340.0" style="-fx-background-color: #01BAEF;" text="A Propos" textFill="WHITE">
             <font>

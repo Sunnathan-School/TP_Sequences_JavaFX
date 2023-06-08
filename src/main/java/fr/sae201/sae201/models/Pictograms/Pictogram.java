@@ -7,19 +7,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
-public class Pictogram extends VBox{
+public class Pictogram extends VBox {
 
     PictogramSerializableAtrributes atrributes = new PictogramSerializableAtrributes();
 
     private ImageView imageView;
     private Label label;
 
-    public Pictogram(Integer id){
+    public Pictogram(Integer id) {
         super();
-        System.out.println("Picto Construct");
         atrributes.setPictoId(id);
-        //String imgUrl = ARASAAC.getPictogrammeURL(id).get("image").asText();
-        String imgUrl = ARASAAC.getPictogrammeURL(atrributes.getPictoId(), atrributes.isPlural(), atrributes.isColor(), atrributes.getBackgroundColor(),atrributes.getAction(),atrributes.getSkin(),atrributes.getHair()).get("image").asText();
+        String imgUrl = ARASAAC.getPictogrammeURL(atrributes.getPictoId(), atrributes.isPlural(), atrributes.isColor(), atrributes.getBackgroundColor(), atrributes.getAction(), atrributes.getSkin(), atrributes.getHair()).get("image").asText();
         imageView = new ImageView(new Image(imgUrl));
         imageView.setFitHeight(100);
         imageView.setPreserveRatio(true);
@@ -27,10 +25,10 @@ public class Pictogram extends VBox{
         setAlignment(Pos.CENTER);
 
 
-        if (atrributes.getTextPosition().equals(PictogramTextPosition.TOP)){
+        if (atrributes.getTextPosition().equals(PictogramTextPosition.TOP)) {
             getChildren().addAll(label, imageView);
-        }else {
-            getChildren().addAll(imageView,label);
+        } else {
+            getChildren().addAll(imageView, label);
         }
 
         setOnMouseEntered(event -> {
@@ -43,36 +41,27 @@ public class Pictogram extends VBox{
 
     }
 
-    public void setAtrributes(PictogramSerializableAtrributes atrributes) {
-        this.atrributes = atrributes;
-    }
-
-    public PictogramSerializableAtrributes getAtrributes() {
-        return atrributes;
-    }
-
-       public void updatePictogram(){
-        System.out.println("Picto Updated");
-        String url = ARASAAC.getPictogrammeURL(atrributes.getPictoId(), atrributes.isPlural(), atrributes.isColor(), atrributes.getBackgroundColor(),atrributes.getAction(),atrributes.getSkin(),atrributes.getHair()).get("image").asText();
+    public void updatePictogram() {
+        String url = ARASAAC.getPictogrammeURL(atrributes.getPictoId(), atrributes.isPlural(), atrributes.isColor(), atrributes.getBackgroundColor(), atrributes.getAction(), atrributes.getSkin(), atrributes.getHair()).get("image").asText();
         this.imageView.setImage(new Image(url));
         this.label.setText(getAtrributes().getPictoText());
         getChildren().clear();
-        if (atrributes.getTextPosition().equals(PictogramTextPosition.TOP)){
+        if (atrributes.getTextPosition().equals(PictogramTextPosition.TOP)) {
             getChildren().addAll(label, imageView);
-        }else {
-            getChildren().addAll(imageView,label);
+        } else {
+            getChildren().addAll(imageView, label);
         }
     }
 
     public Pictogram clonePictogram() {
-        Pictogram clonedPictogram = new Pictogram(atrributes.getPictoId());  // Créer une nouvelle instance du pictogramme
+        // Créer une nouvelle instance du pictogramme
+        Pictogram clonedPictogram = new Pictogram(atrributes.getPictoId());
 
         // Copier les autres propriétés du pictogramme
         clonedPictogram.setAtrributes(getAtrributes());
 
-        // Copier les éléments visuels (ImageView et Label)
+        // Copie  le Label
         clonedPictogram.setLabel(new Label(getAtrributes().getPictoText()));
-        //clonedPictogram.setImageView(this.imageView);
         clonedPictogram.updatePictogram();
         return clonedPictogram;
     }
@@ -93,9 +82,11 @@ public class Pictogram extends VBox{
                 ", label=" + label +
                 '}';
     }
+
     public ImageView getImageView() {
         return imageView;
     }
+
     public Label getLabel() {
         return label;
     }
@@ -106,5 +97,13 @@ public class Pictogram extends VBox{
 
     public void setImageView(ImageView imageView) {
         this.imageView = imageView;
+    }
+
+    public void setAtrributes(PictogramSerializableAtrributes atrributes) {
+        this.atrributes = atrributes;
+    }
+
+    public PictogramSerializableAtrributes getAtrributes() {
+        return atrributes;
     }
 }

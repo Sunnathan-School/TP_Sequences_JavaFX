@@ -1,24 +1,17 @@
 package fr.sae201.sae201.controller;
 
-import fr.sae201.sae201.Application;
 import fr.sae201.sae201.models.Pictograms.*;
-import fr.sae201.sae201.models.StageManager;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class Controller_Modif_Picto {
 
@@ -33,20 +26,16 @@ public class Controller_Modif_Picto {
 
     @FXML
     private ChoiceBox<PictogramHair> hairColorChoiceBox;
-
     @FXML
     private VBox previewVbox;
     @FXML
     private CheckBox pluralCheckBox;
     @FXML
     private TextField pictoText;
-
     @FXML
     private ChoiceBox<PictogramTextPosition> pictoTextPosition;
-
     @FXML
     private ChoiceBox<PictogramSkin> skinColorChoiceBox;
-
     Controller_Principal controllerPrincipal;
 
     private Pictogram editedPicto;
@@ -55,25 +44,10 @@ public class Controller_Modif_Picto {
 
     @FXML
     void initialize() {
-
-        for(PictogramActions action: PictogramActions.values()) {
-            actionChoiceBox.getItems().add(action);
-        }
-
-        for(PictogramHair hair: PictogramHair.values()) {
-            hairColorChoiceBox.getItems().add(hair);
-        }
-
-        for(PictogramSkin skin: PictogramSkin.values()) {
-            skinColorChoiceBox.getItems().add(skin);
-        }
-        for (PictogramTextPosition position : PictogramTextPosition.values()) {
-            pictoTextPosition.getItems().add(position);
-        }
-
-
-
+        initControlsItems();
     }
+
+
 
     public void setEditedPicto(Pictogram editedPicto, Controller_Principal controllerPrincipal) {
         this.editedPicto = editedPicto;
@@ -81,29 +55,17 @@ public class Controller_Modif_Picto {
         previewVbox.getChildren().add(previewPicto);
         this.controllerPrincipal = controllerPrincipal;
 
-        skinColorChoiceBox.setValue(editedPicto.getAtrributes().getSkin());
-        hairColorChoiceBox.setValue(editedPicto.getAtrributes().getHair());
-        actionChoiceBox.setValue(editedPicto.getAtrributes().getAction());
-        pluralCheckBox.setSelected(editedPicto.getAtrributes().isPlural());
-        colorCheckBox.setSelected(editedPicto.getAtrributes().isColor());
-        pictoText.setText(editedPicto.getAtrributes().getPictoText());
-        pictoTextPosition.setValue(editedPicto.getAtrributes().getTextPosition());
+        initControlsValue();
 
-        pictoTextPosition.valueProperty().addListener((observableValue, position, t1) -> updatePicto());
-        actionChoiceBox.valueProperty().addListener((observableValue, position, t1) -> updatePicto());
-        hairColorChoiceBox.valueProperty().addListener((observableValue, position, t1) -> updatePicto());
-        skinColorChoiceBox.valueProperty().addListener((observableValue, position, t1) -> updatePicto());
-        backgroundColorPicker.valueProperty().addListener((observableValue, color, t1) -> updatePicto());
-
+        initControlsListener();
     }
+
 
 
 
     @FXML
     void applyEdit(ActionEvent event) {
-        System.out.println("Tentative de changement de editedPicto");
-
-        Scene scene = (Scene) (((Node) event.getSource()).getScene());
+        Scene scene = ((Node) event.getSource()).getScene();
         controllerPrincipal.updatePicto(editedPicto, previewPicto);
         ((Stage)scene.getWindow()).close();
 
@@ -120,7 +82,15 @@ public class Controller_Modif_Picto {
     }
 
     private void updatePicto(){
-        System.out.println("Rebuild Picto");
+        initPreviewPictoAttributes();
+        previewPicto.updatePictogram();
+        previewVbox.getChildren().clear();
+
+        previewVbox.getChildren().add(previewPicto);
+
+    }
+
+    private void initPreviewPictoAttributes() {
         previewPicto.getAtrributes().setSkin(skinColorChoiceBox.getValue());
         previewPicto.getAtrributes().setHair(hairColorChoiceBox.getValue());
         previewPicto.getAtrributes().setAction(actionChoiceBox.getValue());
@@ -128,13 +98,40 @@ public class Controller_Modif_Picto {
         previewPicto.getAtrributes().setColor(colorCheckBox.isSelected());
         previewPicto.getAtrributes().setPictoText(pictoText.getText());
         previewPicto.getAtrributes().setTextPosition(pictoTextPosition.getValue());
+    }
 
+    private void initControlsListener() {
+        pictoTextPosition.valueProperty().addListener((observableValue, position, t1) -> updatePicto());
+        actionChoiceBox.valueProperty().addListener((observableValue, position, t1) -> updatePicto());
+        hairColorChoiceBox.valueProperty().addListener((observableValue, position, t1) -> updatePicto());
+        skinColorChoiceBox.valueProperty().addListener((observableValue, position, t1) -> updatePicto());
+        backgroundColorPicker.valueProperty().addListener((observableValue, color, t1) -> updatePicto());
+    }
 
-        previewPicto.updatePictogram();
-        previewVbox.getChildren().clear();
-        System.out.println("[DBG] " + previewPicto);
-        System.out.println("[DBG] " + previewPicto.getImageView().getImage().getUrl());
-        previewVbox.getChildren().add(previewPicto);
+    private void initControlsValue() {
+        skinColorChoiceBox.setValue(editedPicto.getAtrributes().getSkin());
+        hairColorChoiceBox.setValue(editedPicto.getAtrributes().getHair());
+        actionChoiceBox.setValue(editedPicto.getAtrributes().getAction());
+        pluralCheckBox.setSelected(editedPicto.getAtrributes().isPlural());
+        colorCheckBox.setSelected(editedPicto.getAtrributes().isColor());
+        pictoText.setText(editedPicto.getAtrributes().getPictoText());
+        pictoTextPosition.setValue(editedPicto.getAtrributes().getTextPosition());
 
+    }
+    private void initControlsItems() {
+        for(PictogramActions action: PictogramActions.values()) {
+            actionChoiceBox.getItems().add(action);
+        }
+
+        for(PictogramHair hair: PictogramHair.values()) {
+            hairColorChoiceBox.getItems().add(hair);
+        }
+
+        for(PictogramSkin skin: PictogramSkin.values()) {
+            skinColorChoiceBox.getItems().add(skin);
+        }
+        for (PictogramTextPosition position : PictogramTextPosition.values()) {
+            pictoTextPosition.getItems().add(position);
+        }
     }
 }
