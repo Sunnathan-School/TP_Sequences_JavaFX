@@ -86,7 +86,7 @@ public class Controller_Modif_Picto {
         actionChoiceBox.setValue(editedPicto.getAtrributes().getAction());
         pluralCheckBox.setSelected(editedPicto.getAtrributes().isPlural());
         colorCheckBox.setSelected(editedPicto.getAtrributes().isColor());
-        pictoText.setText(editedPicto.getLabel().getText());
+        pictoText.setText(editedPicto.getAtrributes().getPictoText());
         pictoTextPosition.setValue(editedPicto.getAtrributes().getTextPosition());
 
         pictoTextPosition.valueProperty().addListener((observableValue, position, t1) -> updatePicto());
@@ -126,7 +126,7 @@ public class Controller_Modif_Picto {
         previewPicto.getAtrributes().setAction(actionChoiceBox.getValue());
         previewPicto.getAtrributes().setPlural(pluralCheckBox.isSelected());
         previewPicto.getAtrributes().setColor(colorCheckBox.isSelected());
-        previewPicto.setLabel(new Label(pictoText.getText()));
+        previewPicto.getAtrributes().setPictoText(pictoText.getText());
         previewPicto.getAtrributes().setTextPosition(pictoTextPosition.getValue());
 
 

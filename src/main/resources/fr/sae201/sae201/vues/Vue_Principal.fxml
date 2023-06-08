@@ -51,7 +51,7 @@
                         <Insets top="8.0" />
                      </VBox.margin>
                   </Button>
-                  <ListView fx:id="pictoAPIList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onDragDetected="#ListViewDragDetected" prefHeight="588.0" prefWidth="239.0" VBox.vgrow="ALWAYS">
+                  <ListView fx:id="pictoAPIList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="588.0" prefWidth="239.0" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="16.0" left="8.0" right="8.0" top="16.0" />
                      </VBox.margin>
@@ -63,7 +63,7 @@
             </VBox>
             <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
                <content>
-                  <FlowPane fx:id="flowPane" maxWidth="1.7976931348623157E308" onDragDropped="#flowPaneDragDropped" onDragOver="#flowPaneDragOver" prefHeight="200.0" prefWidth="200.0" />
+                  <FlowPane fx:id="flowPane" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
                </content>
             </ScrollPane>
         </items>

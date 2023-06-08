@@ -1,46 +1,77 @@
-.menu:hover{
-    -fx-background-color: #717191;
-    }
-#pictoSearchBar{
-    -fx-background-color: rgba(113, 113, 113, 0.25);
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-}
-#searchLabel{
-    -fx-font-size: 14px;
-}
 *{
     -fx-font-family: Rubik;
+    -fx-font-size: 15;
 }
-#mainBorderPane{
-    -fx-background-color: #717171;
+.combo-box{
+    -fx-background-color: rgba(226, 240, 255, 0.9);
 }
+
+#menuBar .label{
+    -fx-text-fill: black;
+}
+
 #menuBar{
-    -fx-background-color: #717171;
-    -fx-font-size: 14;
-
     -fx-text-fill: white;
-}
-#searchBTN{
-    -fx-background-color: #E39219 ;
-    -fx-text-fill: white;
-    -fx-border-color: black;
-    -fx-border-radius: 25px;
-    -fx-background-radius: 25px;
+    -fx-background-image: url("../images/background.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
 }
 
-.gridpane{
-    -fx-border-color: black;
-    -fx-border-width: 2px;
+#filesMenu:hover{
+    -fx-text-fill: white;
+    -fx-background-color: #255A85;
 }
-.scroll-bar{
-    -fx-background-color: transparent;
+#aboutMenu:hover{
+    -fx-text-fill: white;
+    -fx-background-color: #255A85;
 }
-.scroll-bar .thumb{
-    -fx-background-color: rgba(100, 100, 100, 0.48);
+
+.button:hover{
+    -fx-effect: dropshadow(three-pass-box, #01BAEF,20, 0, 0, 0);
 }
-.scroll-bar .increment-arrow ,
-.scroll-bar .decrement-arrow {
-    -fx-shape: " ";
-    -fx-background-color: rgba(100, 100, 100, 0.48);
+.button:pressed{
+    -fx-text-fill: white;
+    -fx-background-color:#255A85;
+    -fx-effect: dropshadow(three-pass-box, #01BAEF,20, 0, 0, 0);
+}
+.button{
+    -fx-border-color: rgba(100, 100, 100, 0.66);
+    -fx-background-color: #FDFFFC;
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+}
+#mainVBox{
+    -fx-background-color: rgba(0, 123, 196, 0.49);
+    -fx-border-width: 0;
+}
+.list-view{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, rgba(121,114,112,0.25454), rgba(50,22,31,0.15454));
+
+}
+.text-field{
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, rgba(203, 203, 203, 0.8), rgba(232, 232, 232, 0.8));
+}
+#flowPane{
+    -fx-background-color: radial-gradient(center 50% 50%, radius 100%, rgba(253,255,252,0.47102591036414565), rgba(121, 114, 112, 0.35));
+}
+#scrollPane{
+    -fx-border-width: 0;
+}
+#mainPane{
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+}
+#borderPane{
+    -fx-background-image: url("../images/background.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+.color-picker{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, rgba(121,114,112,0.25454), rgba(50,22,31,0.15454));
+
+}
+#renderVBox{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, rgba(229, 229, 229), rgba(232, 232, 232));
 }

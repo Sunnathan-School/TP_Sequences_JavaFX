@@ -2,6 +2,9 @@ module fr.sae201.sae201 {
     requires javafx.controls;
     requires javafx.fxml;
     requires jackson.databind;
+    requires org.apache.pdfbox;
+    requires java.desktop;
+    requires javafx.swing;
 
 
     opens fr.sae201.sae201 to javafx.fxml;

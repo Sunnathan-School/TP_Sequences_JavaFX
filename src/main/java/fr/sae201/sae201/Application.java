@@ -1,10 +1,8 @@
 package fr.sae201.sae201;
 
 import fr.sae201.sae201.controller.Controller_Modif_Picto;
-import fr.sae201.sae201.controller.Controller_Principal;
 import fr.sae201.sae201.models.Pictograms.Pictogram;
 import fr.sae201.sae201.models.StageManager;
-import fr.sae201.sae201.utils.ARASAAC;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,7 +24,7 @@ public class Application extends javafx.application.Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("vues/Vue_Principal.fxml"));
         StageManager.homeController = fxmlLoader;
         Scene scene = new Scene(fxmlLoader.load());
-        //scene.getStylesheets().add(String.valueOf(Application.class.getResource("styles/style.css")));
+        scene.getStylesheets().add(String.valueOf(Application.class.getResource("styles/style.css")));
         stage.setTitle("Séquentiels");
         stage.setScene(scene);
         stage.show();

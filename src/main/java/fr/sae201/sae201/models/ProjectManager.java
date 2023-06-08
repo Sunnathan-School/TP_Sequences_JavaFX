@@ -9,6 +9,7 @@ public class ProjectManager {
 
     public static void setProjectPath(String projectPath) {
         ProjectManager.projectPath = projectPath;
+        updateTitle();
     }
 
     public static boolean isProjectPathDefined(){

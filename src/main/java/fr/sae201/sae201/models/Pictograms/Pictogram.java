@@ -23,7 +23,7 @@ public class Pictogram extends VBox{
         imageView = new ImageView(new Image(imgUrl));
         imageView.setFitHeight(100);
         imageView.setPreserveRatio(true);
-        label = new Label();
+        label = new Label(atrributes.getPictoText());
         setAlignment(Pos.CENTER);
 
 
@@ -55,6 +55,7 @@ public class Pictogram extends VBox{
         System.out.println("Picto Updated");
         String url = ARASAAC.getPictogrammeURL(atrributes.getPictoId(), atrributes.isPlural(), atrributes.isColor(), atrributes.getBackgroundColor(),atrributes.getAction(),atrributes.getSkin(),atrributes.getHair()).get("image").asText();
         this.imageView.setImage(new Image(url));
+        this.label.setText(getAtrributes().getPictoText());
         getChildren().clear();
         if (atrributes.getTextPosition().equals(PictogramTextPosition.TOP)){
             getChildren().addAll(label, imageView);
@@ -67,16 +68,12 @@ public class Pictogram extends VBox{
         Pictogram clonedPictogram = new Pictogram(atrributes.getPictoId());  // Créer une nouvelle instance du pictogramme
 
         // Copier les autres propriétés du pictogramme
-        clonedPictogram.atrributes.setPlural(atrributes.isPlural());
-        clonedPictogram.atrributes.setColor(atrributes.isColor());
-        clonedPictogram.atrributes.setBackgroundColor(atrributes.getBackgroundColor());
-        clonedPictogram.atrributes.setAction(atrributes.getAction());
-        clonedPictogram.atrributes.setSkin(atrributes.getSkin());
-        clonedPictogram.atrributes.setHair(atrributes.getHair());
+        clonedPictogram.setAtrributes(getAtrributes());
 
         // Copier les éléments visuels (ImageView et Label)
-        clonedPictogram.setLabel(new Label(this.label.getText()));
-        clonedPictogram.setImageView(this.imageView);
+        clonedPictogram.setLabel(new Label(getAtrributes().getPictoText()));
+        //clonedPictogram.setImageView(this.imageView);
+        clonedPictogram.updatePictogram();
         return clonedPictogram;
     }
 

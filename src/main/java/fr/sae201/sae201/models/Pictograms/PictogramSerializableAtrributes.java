@@ -9,7 +9,7 @@ public class PictogramSerializableAtrributes implements Serializable {
     private PictogramActions action = PictogramActions.NONE;
     private PictogramSkin skin = PictogramSkin.WHITE;
 
-
+    private String pictoText = "";
 
     private PictogramHair hair = PictogramHair.BLACK;
     private int pictoId;
@@ -32,6 +32,14 @@ public class PictogramSerializableAtrributes implements Serializable {
                 ", pictoId=" + pictoId +
                 ", textPosition=" + textPosition +
                 '}';
+    }
+
+    public void setPictoText(String pictoTest) {
+        this.pictoText = pictoTest;
+    }
+
+    public String getPictoText() {
+        return pictoText;
     }
 
     public boolean isPlural() {
