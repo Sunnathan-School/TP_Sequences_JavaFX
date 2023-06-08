@@ -53,6 +53,7 @@ public class Application extends javafx.application.Application {
             modifyPictoStage.initModality(Modality.WINDOW_MODAL);
             modifyPictoStage.initOwner(pictogram.getScene().getWindow());
             modifyPictoStage.show();
+            root.getStylesheets().add(String.valueOf(Application.class.getResource("styles/style.css")));
             ((Controller_Modif_Picto)fxmlLoader.getController()).setEditedPicto(pictogram, StageManager.homeController.getController());
         } catch (IOException e) {
             throw new RuntimeException(e);

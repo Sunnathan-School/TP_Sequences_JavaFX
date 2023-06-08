@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="288.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.sae201.sae201.controller.Controller_Modif_Picto">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="288.0" prefWidth="722.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.sae201.sae201.controller.Controller_Modif_Picto">
    <left>
-      <VBox prefHeight="300.0" prefWidth="141.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="231.0" prefWidth="214.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="63.0" prefWidth="141.0">
                <children>
@@ -49,7 +49,7 @@
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="300.0" prefWidth="174.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="231.0" prefWidth="243.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="34.0" prefWidth="174.0">
                <children>
@@ -110,7 +110,7 @@
       <VBox BorderPane.alignment="CENTER">
          <children>
             <Label text="Rendu" />
-            <VBox fx:id="previewVbox" alignment="CENTER" prefHeight="214.0" prefWidth="213.0" style="-fx-border-color: black;" />
+            <VBox fx:id="previewVbox" alignment="CENTER" prefHeight="213.0" prefWidth="256.0" style="-fx-border-color: black;" />
          </children>
       </VBox>
    </center>
