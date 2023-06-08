@@ -72,6 +72,7 @@ public class Controller_Principal {
     @FXML
     private Button searchBTN;
 
+    //fermeture du séquentiel
     @FXML
     void closeExistingSequentiel(ActionEvent event) {
         setLocked(true);
@@ -82,6 +83,7 @@ public class Controller_Principal {
         pictoSearchBar.setText("");
     }
 
+    //création du séquentiel
     @FXML
     void createNewSequentiel(ActionEvent event) {
         if (flowPane.getChildren().size() > 1){  //Pop-up save si gridPane n'est pas vide
@@ -101,6 +103,7 @@ public class Controller_Principal {
         }
     }
 
+    //Exportation du séquentiel au format PDF
     @FXML
     void onExportSequentiel(ActionEvent event) {
 
@@ -139,6 +142,7 @@ public class Controller_Principal {
         }
     }
 
+    //sauvegarde d'un séquentiel
     @FXML
     void saveSequentiel(ActionEvent event) {
         Sequentiel seq = new Sequentiel();
@@ -146,6 +150,7 @@ public class Controller_Principal {
         seq.saveSequentiel();
     }
 
+    //méthode de recherche d'un pictogramme dans le champ de texte pour 
     @FXML
     void searchPicto(ActionEvent event) {
         //TODO: ajout d'un Cursor WAIT
