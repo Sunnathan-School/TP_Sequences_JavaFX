@@ -45,7 +45,7 @@
                   <Label text="Rechercher des pictogrammes sur ARASAAC" />
                   <TextField fx:id="pictoSearchBar" />
                   <Label text="Catégorie" />
-                  <ComboBox prefWidth="150.0" />
+                  <ComboBox fx:id="pictoCategories" prefWidth="150.0" />
                   <Button fx:id="searchBTN" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#searchPicto" prefHeight="25.0" prefWidth="126.0" text="Rechercher">
                      <VBox.margin>
                         <Insets top="8.0" />

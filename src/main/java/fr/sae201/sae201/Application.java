@@ -49,7 +49,7 @@ public class Application extends javafx.application.Application {
             Parent root = fxmlLoader.load();
 
             modifyPictoStage.setScene(new Scene(root));
-            modifyPictoStage.setTitle("My modal window");
+            modifyPictoStage.setTitle("Modification du pictogramme");
             modifyPictoStage.initModality(Modality.WINDOW_MODAL);
             modifyPictoStage.initOwner(pictogram.getScene().getWindow());
             modifyPictoStage.show();

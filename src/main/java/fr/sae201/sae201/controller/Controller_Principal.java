@@ -3,7 +3,12 @@ package fr.sae201.sae201.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.sae201.sae201.Application;
 import fr.sae201.sae201.models.Pictograms.Pictogram;
+import fr.sae201.sae201.models.Pictograms.PictogramSerializableAtrributes;
+import fr.sae201.sae201.models.ProjectManager;
+import fr.sae201.sae201.models.Sequentiel;
+import fr.sae201.sae201.models.StageManager;
 import fr.sae201.sae201.utils.ARASAAC;
+import fr.sae201.sae201.utils.Alerts;
 import javafx.collections.ListChangeListener;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -20,7 +25,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Controller_Principal {
@@ -56,6 +64,8 @@ public class Controller_Principal {
 
     @FXML
     private MenuItem saveSeqItem;
+    @FXML
+    private ComboBox<String> pictoCategories;
 
     @FXML
     private FlowPane flowPane;
@@ -64,12 +74,31 @@ public class Controller_Principal {
 
     @FXML
     void closeExistingSequentiel(ActionEvent event) {
-
+        setLocked(true);
+        ProjectManager.setProjectPath("");
+        ProjectManager.updateTitle();
+        pictoAPIList.getItems().clear();
+        flowPane.getChildren().clear();
+        pictoSearchBar.setText("");
     }
 
     @FXML
     void createNewSequentiel(ActionEvent event) {
-
+        if (flowPane.getChildren().size() > 1){  //Pop-up save si gridPane n'est pas vide
+            Alerts.showAlertWithoutHeaderText(Alert.AlertType.INFORMATION, "Attention", "Vous avez déjà un projet en cours, merci de le fermer avant !");
+        }else {//ouverture popUp
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialFileName("sequentiel");
+            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Séquentiel (.seq)", "*.seq");
+            fileChooser.getExtensionFilters().add(extensionFilter);
+            fileChooser.setSelectedExtensionFilter(extensionFilter);
+            File file = fileChooser.showSaveDialog(StageManager.homeStage);
+            if (file != null) {
+                ProjectManager.setProjectPath(file.getAbsolutePath());
+                ProjectManager.updateTitle();
+                setLocked(false);
+            }
+        }
     }
 
     @FXML
@@ -79,12 +108,42 @@ public class Controller_Principal {
 
     @FXML
     void openExistingSequentiel(ActionEvent event) {
+        if (flowPane.getChildren().size() > 1){  //Pop-up save si gridPane n'est pas vide
+            Alerts.showAlertWithoutHeaderText(Alert.AlertType.INFORMATION, "Attention", "Vous avez déjà un projet en cours, merci de le fermer avant !");
+        }else {//ouverture popUp
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialFileName("sequentiel");
+            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Séquentiel (.seq)", "*.seq");
+            fileChooser.getExtensionFilters().add(extensionFilter);
+            fileChooser.setSelectedExtensionFilter(extensionFilter);
+            flowPane.getChildren().clear();
+            File file = fileChooser.showOpenDialog(StageManager.homeStage);
+            if (file != null) {
+                ProjectManager.setProjectPath(file.getAbsolutePath());
+                ProjectManager.updateTitle();
+                setLocked(false);
+                Sequentiel seq = new Sequentiel();
+                try {
+                    seq.loadSequentiel();
+                    for (PictogramSerializableAtrributes pictogramAttributes : seq.getPictograms()) {
+                        Pictogram picto = new Pictogram(pictogramAttributes.getPictoId());
+                        picto.setAtrributes(pictogramAttributes);
+                        picto.updatePictogram();
+                        flowPane.getChildren().add(picto);
+                    }
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
 
+            }
+        }
     }
 
     @FXML
     void saveSequentiel(ActionEvent event) {
-
+        Sequentiel seq = new Sequentiel();
+        seq.convertFlowPaneToList(flowPane);
+        seq.saveSequentiel();
     }
 
     @FXML
@@ -126,6 +185,7 @@ public class Controller_Principal {
 
     @FXML
     void initialize(){
+        setLocked(true);
         flowPane.getChildren().addListener((ListChangeListener<Node>) change -> {
             for (Node child : flowPane.getChildren()) {
                 Pictogram pictogram = (Pictogram) child;
@@ -209,6 +269,14 @@ public class Controller_Principal {
     @FXML
     void flowPaneDragOver(DragEvent event) {
 
+    }
+
+    private void setLocked(boolean lock){
+        pictoSearchBar.setDisable(lock);
+        pictoCategories.setDisable(lock);
+        searchBTN.setDisable(lock);
+        saveSeqItem.setDisable(lock);
+        closeSeqItem.setDisable(lock);
     }
 
     public void updatePicto(Pictogram source, Pictogram newPicto){
